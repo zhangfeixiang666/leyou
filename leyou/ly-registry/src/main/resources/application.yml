@@ -1,0 +1,12 @@
+server:
+  port: 8081
+spring:
+  application:
+    name: ly-registry
+eureka:
+  client:
+    service-url:
+      defaultZone: http://127.0.0.1:8081/eureka
+  server:
+    enable-self-preservation: false
+    eviction-interval-timer-in-ms: 1000
