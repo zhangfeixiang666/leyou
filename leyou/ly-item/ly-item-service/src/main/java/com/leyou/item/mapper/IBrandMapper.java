@@ -3,7 +3,10 @@ package com.leyou.item.mapper;
 import com.leyou.item.pojo.Brand;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 import tk.mybatis.mapper.common.Mapper;
+
+import java.util.List;
 
 /**
  * @Author zhangfeixiang
@@ -13,4 +16,11 @@ import tk.mybatis.mapper.common.Mapper;
 public interface IBrandMapper extends Mapper<Brand> {
 	@Insert("INSERT INTO tb_category_brand (category_id, brand_id) VALUES (#{cid},#{bid})")
 	int insertCategoryAndBrand(@Param("cid") Long cid, @Param("bid") Long bid);
+
+
+	/*@Select("select brand_id from tb_category_brand where category_id = #{cid}")
+	List<Long> queryBrandIdsByCid(@Param("cid") Long cid);*/
+
+	@Select("SELECT  b.* FROM `tb_brand` b left join tb_category_brand c on b.id = c.brand_id where c.category_id = #{cid}")
+	List<Brand> queryBrandIdsByCid(@Param("cid") Long cid);
 }

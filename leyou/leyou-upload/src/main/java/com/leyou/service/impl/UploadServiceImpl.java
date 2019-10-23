@@ -1,10 +1,11 @@
-package com.leyou.service;
+package com.leyou.service.impl;
 
 import com.github.tobato.fastdfs.domain.StorePath;
 import com.github.tobato.fastdfs.domain.ThumbImageConfig;
 import com.github.tobato.fastdfs.service.FastFileStorageClient;
 import com.leyou.common.Exception.LyException;
 import com.leyou.common.ExceptionEnum;
+import com.leyou.service.IUploadService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

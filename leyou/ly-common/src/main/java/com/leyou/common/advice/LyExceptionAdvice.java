@@ -16,8 +16,6 @@ public class LyExceptionAdvice {
 
 	@ExceptionHandler(LyException.class)
 	public ResponseEntity<ExceptionResult> lyExceptionHandler(LyException e){
-
-
 		return ResponseEntity.status
 				(e.getExceptionEnum().getCode()).body(new ExceptionResult(e.getExceptionEnum()));
 	}

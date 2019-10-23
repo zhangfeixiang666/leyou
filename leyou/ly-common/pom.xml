@@ -11,6 +11,11 @@
 
     <groupId>com.leyou.common</groupId>
     <artifactId>ly-common</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>tk.mybatis</groupId>
+            <artifactId>mapper-spring-boot-starter</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

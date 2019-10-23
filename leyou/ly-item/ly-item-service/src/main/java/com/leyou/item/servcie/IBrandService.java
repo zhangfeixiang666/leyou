@@ -14,4 +14,6 @@ public interface IBrandService {
 	PageRuslt<Brand> queryBrandPage(String key, Integer page, Integer rows, String sortBy, Boolean desc);
 
 	void addBrand(Brand brand, List<Long> cids);
+
+	List<Brand> queryBrandNamesBycid(Long cid);
 }

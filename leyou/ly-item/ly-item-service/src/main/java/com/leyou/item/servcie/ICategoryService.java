@@ -16,4 +16,6 @@ public interface ICategoryService {
 	 * @return
 	 */
 	List<Category> findCategoryByPid(Long pid);
+
+	List<String> findNameByCids(List<Long> asList);
 }

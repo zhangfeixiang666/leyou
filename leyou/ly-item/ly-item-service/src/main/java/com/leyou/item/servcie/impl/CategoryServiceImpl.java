@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,5 +30,15 @@ public class CategoryServiceImpl implements ICategoryService {
 			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
 		}
 		return categories;
+	}
+
+	@Override
+	public List<String> findNameByCids(List<Long> cids) {
+		ArrayList<String> names = new ArrayList<>();
+		for (Long cid : cids) {
+			String name = categoryMapper.selectByPrimaryKey(cid).getName();
+			names.add(name);
+		}
+		return names;
 	}
 }

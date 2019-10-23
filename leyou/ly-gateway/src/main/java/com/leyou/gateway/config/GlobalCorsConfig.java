@@ -20,6 +20,7 @@ public class GlobalCorsConfig {
 		CorsConfiguration config = new CorsConfiguration();
 		//1.1.添加允许的域名
 		config.addAllowedOrigin("http://manage.leyou.com");
+		config.addAllowedOrigin("http://image.leyou.com");
 		//1.2.是否发送cookie信息
 		config.setAllowCredentials(true);
 		//1.3.允许请求的方式

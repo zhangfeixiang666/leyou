@@ -72,4 +72,25 @@ public class BrandServiceImpl implements IBrandService {
 			}
 		}
 	}
+
+	@Override
+	public List<Brand> queryBrandNamesBycid(Long cid) {
+		List<Brand> brands = this.brandMapper.queryBrandIdsByCid(cid);
+//		List<Long> ids = this.brandMapper.queryBrandIdsByCid(cid);
+
+
+		if (CollectionUtils.isEmpty(brands)){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}
+		/*if (CollectionUtils.isEmpty(ids)){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}*/
+		/*ArrayList<Brand> brands = new ArrayList<>();
+		for (Long id : ids) {
+			Brand brand = this.brandMapper.selectByPrimaryKey(id);
+			brands.add(brand);
+		}*/
+		System.out.println("brands.size() = " + brands.size());
+		return brands;
+	}
 }
