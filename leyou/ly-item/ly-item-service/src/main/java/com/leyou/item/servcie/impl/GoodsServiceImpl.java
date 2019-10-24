@@ -104,6 +104,12 @@ public class GoodsServiceImpl implements IGoodsService {
 		}
 		//3.保存sku
 		List<Sku> skus = spuBo.getSkus();
+		saveStockAndSku(spuId, skus);
+
+	}
+
+	private void saveStockAndSku(Long spuId, List<Sku> skus) {
+		int count;
 		List<Stock> stocks = new ArrayList<Stock>();
 		if(!CollectionUtils.isEmpty(skus)){
 			skus.forEach(sku->{
@@ -118,11 +124,69 @@ public class GoodsServiceImpl implements IGoodsService {
 				stocks.add(stock);
 			});
 		}
-		//4.保存库存
+		//保存库存
 		count = stockMapper.insertList(stocks);
 		if (count < 1){
 			throw new LyException(ExceptionEnum.GOODS_SIVE_FAILED);
 		}
+	}
+
+	@Override
+	public SpuDetail querySpuDetailById(Long spuId) {
+		SpuDetail spuDetail = spuDetailMapper.selectByPrimaryKey(spuId);
+		if (spuDetail == null){
+			throw new LyException(ExceptionEnum.SPUDETAIL_NOT_FOUND);
+		}
+		return spuDetail;
+	}
+
+	@Override
+	@Transactional
+	public List<Sku> querySkusById(Long id) {
+		Sku sku = new Sku();
+		sku.setSpuId(id);
+		List<Sku> skus = skuMapper.select(sku);
+		if (CollectionUtils.isEmpty(skus)){
+			throw new LyException(ExceptionEnum.SKU_NOT_FOUND);
+		}
+		skus.forEach(sku1 -> {
+			sku1.setStock(stockMapper.selectByPrimaryKey(sku1.getId()).getStock());
+		});
+		return skus;
+	}
+
+	@Override
+	@Transactional
+	public void updateGoods(SpuBo spuBo) {
+		//1.删除stock和删除sku
+		List<Sku> skus = spuBo.getSkus();
+		if(CollectionUtils.isEmpty(skus)){
+			throw new LyException(ExceptionEnum.SKU_NOT_NULL);
+		}
+		skus.forEach(sku->{
+			stockMapper.deleteByPrimaryKey(sku.getId());
+			skuMapper.deleteByPrimaryKey(sku.getId());
+		});
+		//3.修改spu
+		Spu spu = new Spu();
+		BeanUtils.copyProperties(spuBo,spu);
+		spu.setLastUpdateTime(new Date());
+		spu.setValid(true);
+		spu.setSaleable(null);
+		spu.setCreateTime(null);
+		int i = spuMapper.updateByPrimaryKeySelective(spu);
+		if (i < 1){
+			throw new LyException(ExceptionEnum.GOODS_UPDATE_FAILED);
+		}
+		//4.修改spuDetial
+		SpuDetail spuDetail = spuBo.getSpuDetail();
+		i = spuDetailMapper.updateByPrimaryKeySelective(spuDetail);
+		if (i < 1){
+			throw new LyException(ExceptionEnum.GOODS_UPDATE_FAILED);
+		}
+		//5.增加sku 增加stock
+		saveStockAndSku(spuBo.getId(), skus);
+
 
 	}
 }

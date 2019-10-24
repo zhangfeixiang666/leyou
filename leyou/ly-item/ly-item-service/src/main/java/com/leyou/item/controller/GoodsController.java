@@ -2,11 +2,15 @@ package com.leyou.item.controller;
 
 import com.leyou.common.vo.PageRuslt;
 import com.leyou.item.bo.SpuBo;
+import com.leyou.item.pojo.Sku;
+import com.leyou.item.pojo.SpuDetail;
 import com.leyou.item.servcie.IGoodsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * @Author zhangfeixiang
@@ -32,6 +36,19 @@ public class GoodsController {
 	@PostMapping("goods")
 	public ResponseEntity<Void>saveGoods(@RequestBody SpuBo spuBo){
 		goodsService.saveGoods(spuBo);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+	@GetMapping("spu/detail/{spuId}")
+	public ResponseEntity<SpuDetail>querySpuDetailById(@PathVariable("spuId")Long spuId){
+		return ResponseEntity.ok(goodsService.querySpuDetailById(spuId));
+	}
+	@GetMapping("sku/list")
+	public ResponseEntity<List<Sku>>querySkusById(@RequestParam("id")Long id){
+		return ResponseEntity.ok(goodsService.querySkusById(id));
+	}
+	@PutMapping("goods")
+	public ResponseEntity<Void>updateGoods(@RequestBody SpuBo spuBo){
+		goodsService.updateGoods(spuBo);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 }
