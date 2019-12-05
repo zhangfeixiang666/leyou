@@ -15,13 +15,17 @@ eureka:
 zuul:
   prefix: /api # 添加路由前缀
   routes:
-    item-service: /item/**
+    item-service: /item/** #商品中心服务
+    search-service: /search/** #搜索中心服务
+    user-service: /user/** #用户中心服务
+    auth-service: /auth/** # 授权中心微服务
+    cart-service: /cart/** #购物车中心微服务
     upload-service:
       path: /upload/**
       serviceId: upload-service
       strip-prefix: false
-
-
+  add-host-header: true #携带请求本身的head头信息
+  sensitive-headers: #配置禁止使用头信息，这里设置为null
 #  retryable: true
 hystrix:
   command:
@@ -36,3 +40,15 @@ ribbon:
 #  OkToRetryOnAllOperations: true # 是否对所有操作重试
   MaxAutoRetriesNextServer: 0 # 同一服务不同实例的重试次数
   MaxAutoRetries: 0 # 同一实例的重试次数
+ly:
+  jwt:
+    cookieName: LY_TOKEN
+    pubKeyPath: C:\\Temp\\rsa\\rsa.pub # 公钥地址
+  filter:
+    allowPaths:
+      - /api/auth
+      - /api/search
+      - /api/user/register
+      - /api/user/check
+      - /api/user/code
+      - /api/item

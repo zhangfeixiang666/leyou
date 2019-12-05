@@ -16,7 +16,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("spec")
-public class SpecificationServiceController {
+public class SpecificationController {
 	@Autowired
 	private ISpecificationService specificationService;
 
@@ -43,5 +43,9 @@ public class SpecificationServiceController {
 			@RequestParam(value = "searching",required = false)Boolean searching
 			){
 		return ResponseEntity.ok(specificationService.querySpecParamsByGid(gid, cid, generic, searching));
+	}
+	@GetMapping("{cid}")
+	public ResponseEntity<List<SpecGroup>> queryParamsByCid(@PathVariable("cid")Long cid ){
+		return ResponseEntity.ok(specificationService.queryParamsByCid(cid));
 	}
 }

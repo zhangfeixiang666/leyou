@@ -13,7 +13,10 @@ import com.leyou.item.pojo.SpuDetail;
 import com.leyou.item.pojo.Stock;
 import com.leyou.item.servcie.ICategoryService;
 import com.leyou.item.servcie.IGoodsService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -32,6 +35,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Service
+@Slf4j
 public class GoodsServiceImpl implements IGoodsService {
 	@Autowired
 	private ISpuMapper spuMapper;
@@ -45,6 +49,8 @@ public class GoodsServiceImpl implements IGoodsService {
 	private ISkuMapper skuMapper;
 	@Autowired
 	private IStockMapper stockMapper;
+	@Autowired
+	private AmqpTemplate amqpTemplate;
 	@Override
 	public PageRuslt<SpuBo> querySpuBoByPage(String key, Boolean saleable, Integer page, Integer rows) {
 		//1分页
@@ -105,6 +111,8 @@ public class GoodsServiceImpl implements IGoodsService {
 		//3.保存sku
 		List<Sku> skus = spuBo.getSkus();
 		saveStockAndSku(spuId, skus);
+		//4.发送消息
+		sendMessage(spuId, "insert");
 
 	}
 
@@ -146,14 +154,9 @@ public class GoodsServiceImpl implements IGoodsService {
 		Sku sku = new Sku();
 		sku.setSpuId(id);
 		List<Sku> skus = skuMapper.select(sku);
-		if (CollectionUtils.isEmpty(skus)){
-			throw new LyException(ExceptionEnum.SKU_NOT_FOUND);
-		}
-		skus.forEach(sku1 -> {
-			sku1.setStock(stockMapper.selectByPrimaryKey(sku1.getId()).getStock());
-		});
-		return skus;
+		return getSkus(skus);
 	}
+
 
 	@Override
 	@Transactional
@@ -186,7 +189,55 @@ public class GoodsServiceImpl implements IGoodsService {
 		}
 		//5.增加sku 增加stock
 		saveStockAndSku(spuBo.getId(), skus);
+		//发送消息
+		sendMessage(spu.getId(), "update");
 
+	}
 
+	@Override
+	public Spu querySpuById(Long spuId) {
+
+		Spu spu = spuMapper.selectByPrimaryKey(spuId);
+		if (spu == null){
+			throw new LyException(ExceptionEnum.GROUP_NOT_FOUND);
+		}
+		return spu;
+	}
+
+	@Override
+	public Sku querySkuById(Long skuId) {
+		Sku sku = skuMapper.selectByPrimaryKey(skuId);
+		return sku;
+	}
+
+	@Override
+	public List<Sku> querySkusByIds(List<Long> skuIds) {
+		List<Sku> skus = skuMapper.selectByIdList(skuIds);
+
+		return getSkus(skus);
+	}
+
+	private void sendMessage(Long id, String type){
+
+		try {
+			this.amqpTemplate.convertAndSend("item."+type, id);
+		} catch (AmqpException e) {
+			log.error("{}商品消息发送异常，商品id:{}", type, id, e);
+
+		}
+	}
+	private List<Sku> getSkus(List<Sku> skus) {
+		if (CollectionUtils.isEmpty(skus)){
+			throw new LyException(ExceptionEnum.SKU_NOT_FOUND);
+		}
+		//需要return
+		/*List<Sku> skus = skus.stream().map(sku -> {
+			sku.setStock(stockMapper.selectByPrimaryKey(sku.getId()).getStock());
+			return sku;
+		}).collect(Collectors.toList());*/
+		skus.forEach(sku1 -> {
+			sku1.setStock(stockMapper.selectByPrimaryKey(sku1.getId()).getStock());
+		});
+		return skus;
 	}
 }

@@ -13,4 +13,6 @@ import java.util.List;
 public interface ISpecificationService {
 	List<SpecGroup> querySpecGroupsByCid(Long cid);
 	List<SpecParam> querySpecParamsByGid(Long gid, Long cid, Boolean generic, Boolean searching);
+
+	List<SpecGroup> queryParamsByCid(Long cid);
 }

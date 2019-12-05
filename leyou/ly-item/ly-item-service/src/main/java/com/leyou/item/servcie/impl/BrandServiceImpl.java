@@ -93,4 +93,22 @@ public class BrandServiceImpl implements IBrandService {
 		System.out.println("brands.size() = " + brands.size());
 		return brands;
 	}
+
+	@Override
+	public List<Brand> queryBrandsByIds(List<Long> ids) {
+		List<Brand> brands = brandMapper.selectByIdList(ids);
+		if (CollectionUtils.isEmpty(brands)){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}
+		return brands;
+	}
+
+	@Override
+	public Brand queryBrandById(Long id) {
+		Brand brand = this.brandMapper.selectByPrimaryKey(id);
+		if (brand == null){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}
+		return brand;
+	}
 }

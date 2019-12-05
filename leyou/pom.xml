@@ -13,6 +13,13 @@
     <module>ly-item</module>
     <module>ly-common</module>
     <module>leyou-upload</module>
+    <module>ly-search</module>
+    <module>leyou-goods-web</module>
+    <module>ly-sms</module>
+    <module>ly-user</module>
+    <module>ly-auth</module>
+    <module>ly-cart</module>
+    <module>ly-order</module>
 </modules>
 <packaging>pom</packaging>
 <parent>

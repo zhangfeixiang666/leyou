@@ -57,4 +57,19 @@ public class SpecificationServiceImpl implements ISpecificationService {
 		}
 		return params;
 	}
+
+	/**
+	 * 查询规格组合规格组参数
+	 * @param cid
+	 * @return
+	 */
+	@Override
+	public List<SpecGroup> queryParamsByCid(Long cid) {
+		List<SpecGroup> groups = this.querySpecGroupsByCid(cid);
+		groups.forEach(g -> {
+			// 查询组内参数
+			g.setParams(this.querySpecParamsByGid(g.getId(), null, null, null));
+		});
+		return groups;
+	}
 }

@@ -18,4 +18,8 @@ public interface ICategoryService {
 	List<Category> findCategoryByPid(Long pid);
 
 	List<String> findNameByCids(List<Long> asList);
+
+	List<Category> queryCategoriesByCids(List<Long> cids);
+
+	List<Category> findCategroyById(Long cid);
 }

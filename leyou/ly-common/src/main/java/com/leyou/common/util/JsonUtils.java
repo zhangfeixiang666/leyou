@@ -56,8 +56,7 @@ public class JsonUtils {
             return null;
         }
     }
-    //@NonNull可以标注在方法、字段、参数之上，表示对应的值不可以为空
-    //@Nullable注解可以标注在方法、字段、参数之上，表示对应的值可以为空
+
     @Nullable
     public static <K, V> Map<K, V> parseMap(String json, Class<K> kClass, Class<V> vClass) {
         try {

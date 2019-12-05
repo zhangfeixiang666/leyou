@@ -41,4 +41,29 @@ public class CategoryServiceImpl implements ICategoryService {
 		}
 		return names;
 	}
+
+	@Override
+	public List<Category> queryCategoriesByCids(List<Long> cids) {
+		List<Category> categories = categoryMapper.selectByIdList(cids);
+		if (CollectionUtils.isEmpty(categories)){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}
+		return categories;
+	}
+
+	@Override
+	public List<Category> findCategroyById(Long cid3) {
+		List<Category> categories = new ArrayList<>();
+		try {
+			Category category = this.categoryMapper.selectByPrimaryKey(cid3);
+			Category category1 = this.categoryMapper.selectByPrimaryKey(category.getParentId());
+			Category category2 = this.categoryMapper.selectByPrimaryKey(category1.getParentId());
+			categories.add(category);
+			categories.add(category1);
+			categories.add(category2);
+		} catch (Exception e) {
+			throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
+		}
+		return categories;
+	}
 }

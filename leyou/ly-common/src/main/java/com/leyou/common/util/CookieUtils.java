@@ -140,7 +140,7 @@ public final class CookieUtils {
 				cookie.setMaxAge(cookieMaxAge);
 			if (null != request)// 设置域名的cookie
 				cookie.setDomain(getDomainName(request));
-			cookie.setPath("/");
+				cookie.setPath("/");
 
 			if(httpOnly != null) {
 				cookie.setHttpOnly(httpOnly);
