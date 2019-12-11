@@ -1,4 +1,4 @@
-package com.leyou.oreder.interceptor;
+package com.leyou.order.interceptor;
 import com.leyou.auth.entry.UserInfo;
 import com.leyou.auth.util.JwtUtils;
 import com.leyou.common.util.CookieUtils;

@@ -1,4 +1,4 @@
-package com.leyou.oreder.pojo;
+package com.leyou.order.pojo;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -42,7 +42,7 @@ public class Order {
     private List<OrderDetail> orderDetails;
 
     @Transient
-    private Integer status;
+    private OrderStatus status;
 
     public Long getOrderId() {
         return orderId;
@@ -228,11 +228,11 @@ public class Order {
         this.orderDetails = orderDetails;
     }
 
-    public Integer getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(Integer status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 }

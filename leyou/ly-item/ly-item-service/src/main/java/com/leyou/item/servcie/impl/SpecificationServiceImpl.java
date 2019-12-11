@@ -72,4 +72,62 @@ public class SpecificationServiceImpl implements ISpecificationService {
 		});
 		return groups;
 	}
+
+	@Override
+	public void saveGroup(SpecGroup group) {
+		group.setId(null);
+		int count = this.specGroupMapper.insert(group);
+		if (count != 1){
+			throw new LyException(ExceptionEnum.GROUP_SAVE_FAILED);
+		}
+	}
+
+	@Override
+	public void updateGroup(SpecGroup group) {
+		int i = this.specGroupMapper.updateByPrimaryKey(group);
+		if (i != 1){
+			throw new LyException(ExceptionEnum.GROUP_UPDATE_FAILED);
+		}
+	}
+
+	@Override
+	public void deleteGruop(Long id) {
+
+		 //先删除分组下的规格参数
+		SpecParam param = new SpecParam();
+		param.setGroupId(id);
+		int i = this.specParamMapper.delete(param);
+		if(i < 0){
+			throw new LyException(ExceptionEnum.DELETE_GROUP_FAILED);
+		}
+		//删除规格参数
+		i = this.specGroupMapper.deleteByPrimaryKey(id);
+		if (i != 1){
+			throw new LyException(ExceptionEnum.DELETE_GROUP_FAILED);
+		}
+	}
+
+	@Override
+	public void saveParam(SpecParam param) {
+		param.setId(null);
+		int count = this.specParamMapper.insert(param);
+		if (count != 1){
+			throw new LyException(ExceptionEnum.PARAM_SAVE_FAILED);
+		}
+	}
+
+	@Override
+	public void updateParam(SpecParam param) {
+		int count = this.specParamMapper.updateByPrimaryKeySelective(param);
+		if (count != 1){
+			throw new LyException(ExceptionEnum.PARAM_UPDATE_FAILED);
+		}
+	}
+	@Override
+	public void deleteParam(Long id) {
+		int count = this.specParamMapper.deleteByPrimaryKey(id);
+		if (count != 1){
+			throw new LyException(ExceptionEnum.DELETE_PARAM_FAILED);
+		}
+	}
 }

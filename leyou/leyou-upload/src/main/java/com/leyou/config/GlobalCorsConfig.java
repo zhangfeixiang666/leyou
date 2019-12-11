@@ -1,4 +1,4 @@
-package com.leyou.gateway.config;
+package com.leyou.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -34,7 +34,7 @@ public class GlobalCorsConfig {
 		//1.4.允许的头信息
 		config.addAllowedHeader("*");
 		//1.5.设置预请求时间
-		config.setMaxAge(7*3600*24L);
+		config.setMaxAge(3600*24L);
 		//2.添加映射路径，我们拦截一切请求
 		UrlBasedCorsConfigurationSource configSource = new UrlBasedCorsConfigurationSource();
 		configSource.registerCorsConfiguration("/**", config);

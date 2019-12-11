@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.leyou.common.Exception.LyException;
 import com.leyou.common.ExceptionEnum;
+import com.leyou.common.vo.CartDTO;
 import com.leyou.common.vo.PageRuslt;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.mapper.*;
@@ -215,6 +216,17 @@ public class GoodsServiceImpl implements IGoodsService {
 		List<Sku> skus = skuMapper.selectByIdList(skuIds);
 
 		return getSkus(skus);
+	}
+
+	@Override
+	@Transactional
+	public void desStock(List<CartDTO> cartDTOS) {
+		cartDTOS.forEach(cartDTO -> {
+			int i = stockMapper.desStock(cartDTO.getSkuId(), cartDTO.getNum());
+			if (i != 1){
+				throw new LyException(ExceptionEnum.ORDER_CREATE_FAILED);
+			}
+		});
 	}
 
 	private void sendMessage(Long id, String type){

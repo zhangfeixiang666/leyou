@@ -1,5 +1,6 @@
 package com.leyou.item.controller;
 
+import com.leyou.common.vo.CartDTO;
 import com.leyou.common.vo.PageRuslt;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Sku;
@@ -77,5 +78,9 @@ public class GoodsController {
 	public ResponseEntity<List<Sku>> querySkusByIds(@RequestParam("skuIds")List<Long> skuIds){
 		return ResponseEntity.ok(goodsService.querySkusByIds(skuIds));
 	}
-
+	@PostMapping
+	public ResponseEntity<Void> desStock(List<CartDTO> cartDTOS){
+		goodsService.desStock(cartDTOS);
+		return ResponseEntity.noContent().build();
+	}
 }

@@ -2,6 +2,7 @@ package com.leyou.item.mapper;
 
 import com.leyou.common.pojo.IBaseMapper;
 import com.leyou.item.pojo.Brand;
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -23,4 +24,7 @@ public interface IBrandMapper extends IBaseMapper<Brand> {
 
 	@Select("SELECT  b.* FROM `tb_brand` b left join tb_category_brand c on b.id = c.brand_id where c.category_id = #{cid}")
 	List<Brand> queryBrandIdsByCid(@Param("cid") Long cid);
+
+	@Delete("delete from tb_category_brand where brand_id = #{id}")
+	int deleteCategroyAndBrand(@Param("id")Long id);
 }

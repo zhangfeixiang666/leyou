@@ -8,6 +8,7 @@ import com.leyou.common.vo.PageRuslt;
 import com.leyou.item.mapper.IBrandMapper;
 import com.leyou.item.pojo.Brand;
 import com.leyou.item.servcie.IBrandService;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ import java.util.List;
  * @Version 1.0
  */
 @Service
+@Slf4j
 public class BrandServiceImpl implements IBrandService {
 	@Autowired
 	private IBrandMapper brandMapper;
@@ -31,6 +33,7 @@ public class BrandServiceImpl implements IBrandService {
 		//1.分页
 		PageHelper.startPage(page, rows);
 		//2.过滤
+		//2.1创建模板，要分页实体类的class
 		Example example = new Example(Brand.class);
 		if (!StringUtils.isBlank(key)){
 			example.createCriteria().andLike("name", "%"+key+"%")
@@ -110,5 +113,40 @@ public class BrandServiceImpl implements IBrandService {
 			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
 		}
 		return brand;
+	}
+
+	@Override
+	@Transactional
+	public void updateBrand(Brand brand, List<Long> cids) {
+		//更新品牌
+		int i = brandMapper.updateByPrimaryKey(brand);
+		if (i != 1){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}
+		//更新品牌分类表
+		//1.1删除以前存在的
+		i = brandMapper.deleteCategroyAndBrand(brand.getId());
+		if (i != 1){
+			throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+		}
+		//1.2添加更新的
+		cids.forEach(cid->{
+			int count = brandMapper.insertCategoryAndBrand(cid, brand.getId());
+			if (count != 1){
+				throw new LyException(ExceptionEnum.BRAND_NOT_FOUND);
+			}
+		});
+	}
+	@Transactional
+	@Override
+	public void deleteBrandById(Long id) {
+		//1.删除中间表的数据
+		brandMapper.deleteCategroyAndBrand(id);
+		//2.删除品牌
+		int count = brandMapper.deleteByPrimaryKey(id);
+		if (count != 1){
+			log.error("商品删除失败，商品id为：{}",id);
+			throw new LyException(ExceptionEnum.DELETE_BRAND_FAILED);
+		}
 	}
 }

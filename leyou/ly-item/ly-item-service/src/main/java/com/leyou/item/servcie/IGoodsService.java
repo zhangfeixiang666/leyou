@@ -1,5 +1,6 @@
 package com.leyou.item.servcie;
 
+import com.leyou.common.vo.CartDTO;
 import com.leyou.common.vo.PageRuslt;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Sku;
@@ -59,4 +60,10 @@ public interface IGoodsService  {
 	 * @return
 	 */
 	List<Sku> querySkusByIds(List<Long> skuIds);
+
+	/**
+	 * 减库存
+	 * @param cartDTOS
+	 */
+	void desStock(List<CartDTO> cartDTOS);
 }

@@ -4,7 +4,10 @@ import com.leyou.item.pojo.Category;
 import com.leyou.item.servcie.ICategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -41,5 +44,9 @@ public class CategoryController {
 	public ResponseEntity<List<String>> findNamesByIds(@RequestParam("ids") List<Long> ids){
 		List<String> names = categoryService.findNameByCids(ids);
 		return ResponseEntity.ok(names);
+	}
+	@GetMapping("category/bid/{id}")
+	public ResponseEntity<List<Category>> queryCategoriesByBid(@PathVariable("id")Long id){
+		return ResponseEntity.ok(categoryService.queryCategoriesByBid(id));
 	}
 }

@@ -1,6 +1,6 @@
-package com.leyou.oreder.mapper;
+package com.leyou.order.mapper;
 
-import com.leyou.oreder.pojo.OrderStatus;
+import com.leyou.order.pojo.OrderStatus;
 import tk.mybatis.mapper.common.Mapper;
 
 public interface OrderStatusMapper extends Mapper<OrderStatus> {

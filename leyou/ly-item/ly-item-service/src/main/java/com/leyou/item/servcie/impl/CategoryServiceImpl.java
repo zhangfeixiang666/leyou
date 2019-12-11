@@ -23,6 +23,7 @@ public class CategoryServiceImpl implements ICategoryService {
 	private ICategoryMapper categoryMapper;
 	@Override
 	public List<Category> findCategoryByPid(Long pid) {
+		//创建一个对象，作为查询条件
 		Category category = new Category();
 		category.setParentId(pid);
 		List<Category> categories = categoryMapper.select(category);
@@ -64,6 +65,13 @@ public class CategoryServiceImpl implements ICategoryService {
 		} catch (Exception e) {
 			throw new LyException(ExceptionEnum.CATEGORY_NOT_FOUND);
 		}
+		return categories;
+	}
+
+	@Override
+	public List<Category> queryCategoriesByBid(Long id) {
+		List<Long> ids = categoryMapper.queryCategoriesbyBid(id);
+		List<Category> categories = queryCategoriesByCids(ids);
 		return categories;
 	}
 }

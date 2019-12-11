@@ -1,47 +1,29 @@
 package com.leyou.config;
 
 import com.github.wxpay.sdk.WXPayConfig;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
-import org.springframework.context.annotation.Configuration;
+import lombok.Data;
 
 import java.io.InputStream;
-
-@Configuration
-@EnableConfigurationProperties(PayProperties.class)
+@Data
 public class PayConfig implements WXPayConfig {
 
-    @Autowired
-    private PayProperties payProperties;
+    private String appID; // 公众账号ID
 
-    @Override
-    public String getAppID() {
-        return payProperties.getAppId();
-    }
+    private String mchID; // 商户号
 
-    @Override
-    public String getMchID() {
-        return payProperties.getMchId();
-    }
+    private String key; // 生成签名的密钥
 
-    @Override
-    public String getKey() {
-        return payProperties.getKey();
-    }
+    private int httpConnectTimeoutMs; // 连接超时时间
+
+    private int httpReadTimeoutMs;// 读取超时时间
+
+    private String notifyUrl;
 
     @Override
     public InputStream getCertStream() {
         return null;
     }
 
-    @Override
-    public int getHttpConnectTimeoutMs() {
-        return payProperties.getConnectTimeoutMs();
-    }
 
-    @Override
-    public int getHttpReadTimeoutMs() {
-        return payProperties.getReadTimeoutMs();
-    }
 
 }

@@ -20,6 +20,16 @@ import java.util.List;
 public class BrandController {
 	@Autowired
 	private IBrandService brandService;
+
+	/**
+	 * 分页查询商品
+	 * @param key 关键字
+	 * @param page 当前页
+	 * @param rows 条数
+	 * @param sortBy 排序字段
+	 * @param desc  升序还是降序
+	 * @return
+	 */
 	@GetMapping("page")
 	public ResponseEntity<PageRuslt<Brand>> queryBrandPage(
 			@RequestParam(value = "key", required = false)String key,
@@ -43,6 +53,17 @@ public class BrandController {
 	}
 
 	/**
+	 * 修改品牌
+	 * @param brand
+	 * @param cids
+	 * @return
+	 */
+	@PutMapping("brand")
+	public ResponseEntity<Void> updateBrand(Brand brand, @RequestParam("cids")List<Long> cids){
+		brandService.updateBrand(brand,cids);
+		return ResponseEntity.status(HttpStatus.CREATED).build();
+	}
+	/**
 	 * 根据cid查询品牌名称
 	 * @param cid
 	 * @return
@@ -59,4 +80,16 @@ public class BrandController {
 	public ResponseEntity<Brand>queryBrandById(@PathVariable("id")Long id){
 		return ResponseEntity.ok(brandService.queryBrandById(id));
 	}
+
+	/**
+	 * 根据id删除品牌
+	 * @param id
+	 * @return
+	 */
+	@GetMapping("delete/{id}")
+	public ResponseEntity<Void> deleteBrandById(@PathVariable("id")Long id){
+		brandService.deleteBrandById(id);
+		return ResponseEntity.noContent().build();
+	}
+
 }

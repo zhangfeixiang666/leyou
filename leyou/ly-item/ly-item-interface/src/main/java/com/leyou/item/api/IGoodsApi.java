@@ -1,5 +1,6 @@
 package com.leyou.item.api;
 
+import com.leyou.common.vo.CartDTO;
 import com.leyou.common.vo.PageRuslt;
 import com.leyou.item.bo.SpuBo;
 import com.leyou.item.pojo.Sku;
@@ -7,6 +8,7 @@ import com.leyou.item.pojo.Spu;
 import com.leyou.item.pojo.SpuDetail;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
@@ -71,6 +73,19 @@ public interface IGoodsApi {
 	 * @param skuIds
 	 * @return
 	 */
-	@GetMapping("skus")
+	/*@GetMapping("skus")
 	List<Sku> querySkusByIds(@RequestParam("skuIds")List<Long> skuIds);
+	/**
+	 *
+	 */
+	@GetMapping("sku/list/ids")
+	List<Sku> querySkusByIds(@RequestParam("skuIds")List<Long> skuIds);
+
+	/**
+	 * 减库存
+	 * @param cartDTOS
+	 * @return
+	 */
+	@PostMapping
+	Void desStock(List<CartDTO> cartDTOS);
 }

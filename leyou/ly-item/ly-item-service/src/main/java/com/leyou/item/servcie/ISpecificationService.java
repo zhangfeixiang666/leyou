@@ -15,4 +15,40 @@ public interface ISpecificationService {
 	List<SpecParam> querySpecParamsByGid(Long gid, Long cid, Boolean generic, Boolean searching);
 
 	List<SpecGroup> queryParamsByCid(Long cid);
+
+	/**
+	 * 新增分组
+	 * @param group
+	 */
+	void saveGroup(SpecGroup group);
+
+	/**
+	 * 修改规格参数组
+	 * @param group
+	 */
+	void updateGroup(SpecGroup group);
+
+	/**
+	 * 删除规格组
+	 * @param id
+	 */
+	void deleteGruop(Long id);
+
+	/**
+	 * 新增规格参数
+	 * @param param
+	 */
+	void saveParam(SpecParam param);
+
+	/**
+	 * 修改规格参数
+	 * @param param
+	 */
+	void updateParam(SpecParam param);
+
+	/**
+	 * 删除规格参数
+	 * @param id
+	 */
+	void deleteParam(Long id);
 }

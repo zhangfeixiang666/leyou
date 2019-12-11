@@ -48,4 +48,70 @@ public class SpecificationController {
 	public ResponseEntity<List<SpecGroup>> queryParamsByCid(@PathVariable("cid")Long cid ){
 		return ResponseEntity.ok(specificationService.queryParamsByCid(cid));
 	}
+
+	/**
+	 * 增加规格参数组
+	 * @param group
+	 * @return
+	 */
+	@PostMapping("group")
+	public ResponseEntity<Void> saveGroup(@RequestBody SpecGroup group){
+		this.specificationService.saveGroup(group);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 修改规格参数组
+	 * @param group
+	 * @return
+	 */
+	@PutMapping("group")
+	public ResponseEntity<Void> updateGroup(@RequestBody SpecGroup group){
+		this.specificationService.updateGroup(group);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 删除规格组
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("group/{id}")
+	public ResponseEntity<Void> deleteGruop(@PathVariable("id") Long id){
+		this.specificationService.deleteGruop(id);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 新增参数
+	 * @param param
+	 * @return
+	 */
+	@PostMapping("param")
+	public ResponseEntity<Void> saveParam(@RequestBody SpecParam param){
+		this.specificationService.saveParam(param);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 *
+	 * @param param
+	 * @return
+	 */
+	@PutMapping("param")
+	public ResponseEntity<Void> updateParam(@RequestBody SpecParam param){
+		this.specificationService.updateParam(param);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 删除规格参数
+	 * @param id
+	 * @return
+	 */
+	@DeleteMapping("param/{id}")
+	public ResponseEntity<Void> deleteParam(@PathVariable("id") Long id){
+		this.specificationService.deleteParam(id);
+		return ResponseEntity.noContent().build();
+	}
 }
