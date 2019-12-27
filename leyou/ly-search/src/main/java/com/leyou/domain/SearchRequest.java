@@ -7,9 +7,9 @@ public class SearchRequest implements Serializable {
     private String key;// 搜索条件
 
     private Integer page;// 当前页
-    private String sortBy;
-    private Boolean descending;
-    private Map<String,String> filter;
+    private String sortBy;//排序字段
+    private Boolean descending;//是否降序
+    private Map<String,String> filter;//搜索过滤字段
 
 
     private static final Integer DEFAULT_SIZE = 20;// 每页大小，不从页面接收，而是固定大小

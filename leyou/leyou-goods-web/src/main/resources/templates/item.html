@@ -193,12 +193,14 @@
                     </div>
                     <div class="clearfix choose">
                         <div id="specification" class="summary-wrap clearfix">
+                           <!--遍历对象-->
                             <dl v-for="(spe,k) in specialSpec" :key="k">
                                 <dt>
                                     <div class="fl title">
                                         <i v-text="paramMap[k]"></i>
                                     </div>
                                 </dt>
+                                <!--遍历数组-->
                                 <dd v-for="(o,j) in spe" :key="j">
                                     <a href="javascript:;" :class="{selected : j===indexes[k]}" @click="indexes[k] = j">
                                         {{o}}<span title="点击取消选择">&nbsp;</span>
@@ -475,6 +477,7 @@
 
                                 </div>
                             </div>
+                           <!--规格参数-->
                             <div id="two" class="tab-pane">
                                 <div class="Ptable">
                                     <div class="Ptable-item" v-for="(group,k) in specs" :key="k">
@@ -740,10 +743,11 @@
                                          image: this.images[0],
                                          price: this.sku.price,
                                          num: this.num,
-                                         ownSpec: JSON.stringify(this.sku.ownSpec)
+                                         //修改ownSpec todo
+                                         ownSpec: this.sku.ownSpec,
+                                         title:this.sku.title
                                      })
                             .then(()=>{
-                                alert("你为啥不跳");
                                 window.location.href="http://www.leyou.com/cart.html";
                             });
                     }).catch(() => {
@@ -766,7 +770,8 @@
                             image: this.images[0],
                             price: this.sku.price,
                             num: this.num,
-                            ownSpec: JSON.stringify(this.sku.ownSpec)
+                            //修改ownSpec todo
+                            ownSpec: this.sku.ownSpec
                         };
                         carts.push(cart);
                     }

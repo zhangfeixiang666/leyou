@@ -22,10 +22,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class GoodsController {
 	@Autowired
 	private IGoodsService goodsService;
+
+	/**
+	 *分页查询数据
+	 * @param searchRequest
+	 * @return
+	 */
 	@PostMapping("page")
 	public @ResponseBody ResponseEntity<SearchResult<Goods>> searchGoodsPage(@RequestBody SearchRequest searchRequest){
 		System.out.println("searchRequest = " + searchRequest);
-
 		return ResponseEntity.ok(goodsService.searchGoodsPage(searchRequest));
 	}
 

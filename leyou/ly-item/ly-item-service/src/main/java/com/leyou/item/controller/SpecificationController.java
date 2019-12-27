@@ -44,6 +44,12 @@ public class SpecificationController {
 			){
 		return ResponseEntity.ok(specificationService.querySpecParamsByGid(gid, cid, generic, searching));
 	}
+
+	/**
+	 * 查询规格组参数 以及组内参数
+	 * @param cid
+	 * @return
+	 */
 	@GetMapping("{cid}")
 	public ResponseEntity<List<SpecGroup>> queryParamsByCid(@PathVariable("cid")Long cid ){
 		return ResponseEntity.ok(specificationService.queryParamsByCid(cid));
@@ -77,8 +83,8 @@ public class SpecificationController {
 	 * @return
 	 */
 	@DeleteMapping("group/{id}")
-	public ResponseEntity<Void> deleteGruop(@PathVariable("id") Long id){
-		this.specificationService.deleteGruop(id);
+	public ResponseEntity<Void> deleteGroup(@PathVariable("id") Long id){
+		this.specificationService.deleteGroup(id);
 		return ResponseEntity.noContent().build();
 	}
 

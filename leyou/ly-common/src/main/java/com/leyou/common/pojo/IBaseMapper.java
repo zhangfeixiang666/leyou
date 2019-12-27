@@ -1,5 +1,6 @@
 package com.leyou.common.pojo;
 
+import tk.mybatis.mapper.additional.idlist.DeleteByIdListMapper;
 import tk.mybatis.mapper.additional.idlist.SelectByIdListMapper;
 import tk.mybatis.mapper.additional.insert.InsertListMapper;
 import tk.mybatis.mapper.annotation.RegisterMapper;
@@ -11,5 +12,5 @@ import tk.mybatis.mapper.common.Mapper;
  * @Version 1.0
  */
 @RegisterMapper
-public interface IBaseMapper<T> extends Mapper<T>, SelectByIdListMapper<T,Long>, InsertListMapper<T> {
+public interface IBaseMapper<T> extends Mapper<T>, SelectByIdListMapper<T,Long>, InsertListMapper<T>, DeleteByIdListMapper<T,Long>{
 }

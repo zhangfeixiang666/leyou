@@ -16,8 +16,8 @@ spring:
     password: leyou
     virtual-host: /leyou
     template:
-      exchange: leyou.item.exchange
-    publisher-confirms: true
+      exchange: leyou.item.exchange #交换机
+    publisher-confirms: true #消息确认
 eureka:
   client:
     service-url:

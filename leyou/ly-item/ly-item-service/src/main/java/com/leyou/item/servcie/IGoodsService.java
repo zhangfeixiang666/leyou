@@ -51,6 +51,11 @@ public interface IGoodsService  {
 	 */
 	void updateGoods(SpuBo spuBo);
 
+	/**
+	 * 根据spuId查询spu
+	 * @param spuId
+	 * @return
+	 */
 	Spu querySpuById(Long spuId);
 
 	Sku querySkuById(Long skuId);
@@ -66,4 +71,16 @@ public interface IGoodsService  {
 	 * @param cartDTOS
 	 */
 	void desStock(List<CartDTO> cartDTOS);
+
+	/**
+	 * 商品上下架
+	 * @param spu
+	 */
+	void saleable(Spu spu);
+
+	/**
+	 * 删除商品
+	 * @param spuId
+	 */
+	void deleteGoods(Long spuId);
 }

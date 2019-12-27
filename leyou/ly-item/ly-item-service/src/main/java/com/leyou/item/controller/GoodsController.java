@@ -24,6 +24,15 @@ import java.util.List;
 public class GoodsController {
 	@Autowired
 	private IGoodsService goodsService;
+
+	/**
+	 * 分页查询goods
+	 * @param key 搜索关键字
+	 * @param saleable 上下架
+	 * @param page 当前页
+	 * @param rows 条数
+	 * @return
+	 */
 	@GetMapping("spu/page")
 	public ResponseEntity<PageRuslt<SpuBo>>querySpuBoByPage(
 			@RequestParam(value = "key", required = false)String key,
@@ -35,24 +44,75 @@ public class GoodsController {
 
 		return ResponseEntity.ok(goodsService.querySpuBoByPage(key, saleable, page, rows));
 	}
+
+	/**
+	 * 保存商品
+	 * @param spuBo
+	 * @return
+	 */
 	@PostMapping("goods")
 	public ResponseEntity<Void>saveGoods(@RequestBody SpuBo spuBo){
 		goodsService.saveGoods(spuBo);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+	/**
+	 * 查询spu详情
+	 * @param spuId
+	 * @return
+	 */
 	@GetMapping("spu/detail/{spuId}")
 	public ResponseEntity<SpuDetail>querySpuDetailById(@PathVariable("spuId")Long spuId){
 		return ResponseEntity.ok(goodsService.querySpuDetailById(spuId));
 	}
+
+	/**
+	 * 查询skus
+	 * @param id
+	 * @return
+	 */
 	@GetMapping("sku/list")
 	public ResponseEntity<List<Sku>>querySkusById(@RequestParam("id")Long id){
 		return ResponseEntity.ok(goodsService.querySkusById(id));
 	}
+
+	/**
+	 * 修改商品
+	 * @param spuBo
+	 * @return
+	 */
 	@PutMapping("goods")
 	public ResponseEntity<Void>updateGoods(@RequestBody SpuBo spuBo){
 		goodsService.updateGoods(spuBo);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
+
+	/**
+	 * 商品上下架
+	 * @param spu
+	 * @return
+	 */
+	@PutMapping("spu/saleable")
+	public ResponseEntity<Void> saleable(@RequestBody Spu spu){
+		goodsService.saleable(spu);
+		return ResponseEntity.noContent().build();
+	}
+
+	/**
+	 * 删除商品
+	 * @param spuId
+	 * @return
+	 */
+	@DeleteMapping("spu/delete/{id}")
+	public ResponseEntity<Void> deleteGoods(@PathVariable("id")Long spuId){
+		goodsService.deleteGoods(spuId);
+		return ResponseEntity.noContent().build();
+	}
+	/**
+	 * 查询spu：搜素微服务
+	 * @param spuId
+	 * @return
+	 */
 	@GetMapping("spu/{id}")
 	public ResponseEntity<Spu> querySpuById(@PathVariable("id") Long spuId){
 		return ResponseEntity.ok(goodsService.querySpuById(spuId));
@@ -78,8 +138,14 @@ public class GoodsController {
 	public ResponseEntity<List<Sku>> querySkusByIds(@RequestParam("skuIds")List<Long> skuIds){
 		return ResponseEntity.ok(goodsService.querySkusByIds(skuIds));
 	}
-	@PostMapping
-	public ResponseEntity<Void> desStock(List<CartDTO> cartDTOS){
+
+	/**
+	 * 减库存
+	 * @param cartDTOS
+	 * @return
+	 */
+	@PostMapping("spu/destock")
+	public ResponseEntity<Void> desStock(@RequestBody List<CartDTO> cartDTOS){
 		goodsService.desStock(cartDTOS);
 		return ResponseEntity.noContent().build();
 	}

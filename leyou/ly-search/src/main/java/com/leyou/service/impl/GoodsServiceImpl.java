@@ -65,9 +65,10 @@ public class GoodsServiceImpl implements IGoodsService {
 		StringBuilder all = new StringBuilder(spuBo.getTitle());
 		all.append(" ").append(spuBo.getBname()).append(" ")
 				.append(StringUtils.replaceChars(spuBo.getCname(),"/", " "));
-		//2.处理价格处理skus
+		//2.处理价格 处理skus
 		Set<Long> priceSet = new TreeSet<>();
 		List<Map<String, Object>> skus = new ArrayList<>();
+		//2.1查询skus
 		List<Sku> skuList = goodsClient.querySkusById(spuId);
 		skuList.forEach(sku -> {
 			//处理sku
@@ -138,6 +139,7 @@ public class GoodsServiceImpl implements IGoodsService {
 		QueryBuilder builder = buildBasicQuery(searchRequest);
 		NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
 		queryBuilder.withQuery(builder);
+		//过滤，排序
 		queryBuilder.withSourceFilter(new FetchSourceFilter(new String[]{"id","skus","subTitle"}, null));
 		String sortBy = searchRequest.getSortBy();
 
@@ -200,6 +202,7 @@ public class GoodsServiceImpl implements IGoodsService {
 		query.must(QueryBuilders.matchQuery("all", searchRequest.getKey()).operator(Operator.AND));
 		BoolQueryBuilder filterBuilder = QueryBuilders.boolQuery();
 		Map<String, String> filter = searchRequest.getFilter();
+		//todo ?
 		if (filter == null){
 			return null;
 		}
@@ -217,7 +220,9 @@ public class GoodsServiceImpl implements IGoodsService {
 
 	private List<Map<String, Object>> getSpecs(Long id, QueryBuilder builder) {
 		List<Map<String, Object>> specs = new ArrayList<>();
+		//获取规格参数
 		List<SpecParam> params = specificationClient.querySpecParamsByGid(null, id, null, true);
+		//构建原生查询
 		NativeSearchQueryBuilder queryBuilder = new NativeSearchQueryBuilder();
 		queryBuilder.withQuery(builder);
 		//聚合
@@ -227,6 +232,7 @@ public class GoodsServiceImpl implements IGoodsService {
 		});
 		//解析
 		AggregatedPage<Goods> goods = this.template.queryForPage(queryBuilder.build(), Goods.class);
+		//遍历封装spec Map<string, Object>
 		params.forEach(param->{
 			//
 			Map<String,Object> spec = new HashMap<>();
@@ -245,11 +251,14 @@ public class GoodsServiceImpl implements IGoodsService {
 	}
 
 	private List<Brand> getBrandList(LongTerms terms) {
+
 		List<LongTerms.Bucket> buckets = terms.getBuckets();
+		//获取brandIds
 		List<Long> brandIds = new ArrayList<>();
 		buckets.forEach(bucket -> {
 			brandIds.add(bucket.getKeyAsNumber().longValue());
 		});
+		//查询brands
 		return brandClient.queryBrandsByIds(brandIds);
 	}
 

@@ -16,7 +16,7 @@ public class PayProperties {
 
     private int readTimeoutMs;// 读取超时时间
 
-    private String notifyUrl;
+    private String notifyUrl;//回调地址
 
 
 }

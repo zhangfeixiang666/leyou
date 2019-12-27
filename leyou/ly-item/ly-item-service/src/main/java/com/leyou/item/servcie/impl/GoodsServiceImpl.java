@@ -29,6 +29,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @Author zhangfeixiang
@@ -73,6 +74,7 @@ public class GoodsServiceImpl implements IGoodsService {
 		ArrayList<SpuBo> spuBos = new ArrayList<>();
 		for (Spu spu : spus) {
 			SpuBo spuBo = new SpuBo();
+			//对象copy 将spu的属性值copy到spuBo
 			BeanUtils.copyProperties(spu, spuBo);
 			List<String> names = categoryService.findNameByCids(
 					Arrays.asList(spu.getCid1(), spu.getCid2(), spu.getCid3()));
@@ -90,13 +92,17 @@ public class GoodsServiceImpl implements IGoodsService {
 	public void saveGoods(SpuBo spuBo) {
 		//1.保存spu
 		Spu spu = new Spu();
+		//对象copy
 		BeanUtils.copyProperties(spuBo, spu);
-		System.out.println("spuBo = " + spuBo);
-		System.out.println("spu = " + spu);
+		//设置是否上架
 		spu.setSaleable(true);
+		//设置是否有效
 		spu.setValid(true);
+		//设置创建时间
 		spu.setCreateTime(new Date());
+		//设置最后修改时间
 		spu.setLastUpdateTime(new Date());
+		//新增spu
 		int count = spuMapper.insert(spu);
 		if (count != 1){
 			throw new LyException(ExceptionEnum.GOODS_SIVE_FAILED);
@@ -125,6 +131,7 @@ public class GoodsServiceImpl implements IGoodsService {
 				sku.setSpuId(spuId);
 				sku.setCreateTime(new Date());
 				sku.setLastUpdateTime(new Date());
+				//新增sku
 				skuMapper.insert(sku);
 				//创建stock接受id和stock
 				Stock stock = new Stock();
@@ -229,12 +236,67 @@ public class GoodsServiceImpl implements IGoodsService {
 		});
 	}
 
+	@Override
+	public void saleable(Spu spu) {
+		int i = spuMapper.updateByPrimaryKeySelective(spu);
+		//todo 是否把sku的enable属性设置为false，我感觉不需要
+		if (i != 1){
+			log.error("商品上下架失败：{}",spu.getId());
+			throw new LyException(ExceptionEnum.GROUP_UPDATE_FAILED);
+		}
+	}
+	@Transactional
+	@Override
+	public void deleteGoods(Long spuId) {
+		//1.删除SpuDetail
+		int count = spuDetailMapper.deleteByPrimaryKey(spuId);
+		if (count < 1){
+			throw new LyException(ExceptionEnum.SPU_DELETE_FAILED);
+		}
+		//2.删除skus并删除库存
+		Sku sku = new Sku();
+		sku.setSpuId(spuId);
+		List<Sku> skus = skuMapper.select(sku);
+		if (CollectionUtils.isEmpty(skus)){
+			throw new LyException(ExceptionEnum.SPU_DELETE_FAILED);
+		}
+		List<Long> ids = skus.stream().map(Sku::getId).collect(Collectors.toList());
+		List<String> images = skus.stream().map(Sku::getImages).collect(Collectors.toList());
+		sendFiles(images);
+		//2.1删除skus
+		count = skuMapper.deleteByIdList(ids);
+		if (count < 1){
+			throw new LyException(ExceptionEnum.SPU_DELETE_FAILED);
+		}
+		//2.2删除stocks
+		count = stockMapper.deleteByIdList(ids);
+		if (count < 1){
+			throw new LyException(ExceptionEnum.SPU_DELETE_FAILED);
+		}
+		//3删除spu
+		count = spuMapper.deleteByPrimaryKey(spuId);
+		if (count != 1){
+			throw new LyException(ExceptionEnum.SPU_DELETE_FAILED);
+		}
+		//4.发送消息
+		sendMessage(spuId, "delete");
+	}
+
+	public void sendFiles(List<String> images) {
+		try {
+			this.amqpTemplate.convertAndSend("file.delete", images);
+		} catch (AmqpException e) {
+			log.error("{}文件消息发送异常，商品id:{},异常:{}",images.toString(), e);
+		}
+	}
+
+	//todo 能不能用Object
 	private void sendMessage(Long id, String type){
 
 		try {
 			this.amqpTemplate.convertAndSend("item."+type, id);
 		} catch (AmqpException e) {
-			log.error("{}商品消息发送异常，商品id:{}", type, id, e);
+			log.error("{}商品消息发送异常，商品id:{},异常:{}", type, id, e);
 
 		}
 	}

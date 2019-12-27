@@ -44,7 +44,7 @@ public class IGoodRepositoryTest {
 	public void saveGoods(){
 		int size = 100;
 		int page = 1;
-		do{
+		do{	//查询spuBo
 			PageRuslt<SpuBo> spuBoPageRuslt = goodsClient.querySpuBoByPage(null, true, page, size);
 			List<SpuBo> spuBos = spuBoPageRuslt.getItems();
 			/*List<Goods> goods = spuBos.stream().map(spuBo -> {

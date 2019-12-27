@@ -86,6 +86,6 @@ public interface IGoodsApi {
 	 * @param cartDTOS
 	 * @return
 	 */
-	@PostMapping
+	@PostMapping("spu/destock")
 	Void desStock(List<CartDTO> cartDTOS);
 }

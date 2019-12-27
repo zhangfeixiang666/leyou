@@ -14,6 +14,11 @@ public interface ISpecificationService {
 	List<SpecGroup> querySpecGroupsByCid(Long cid);
 	List<SpecParam> querySpecParamsByGid(Long gid, Long cid, Boolean generic, Boolean searching);
 
+	/**
+	 * 查询规格组参数以及组内参数
+	 * @param cid
+	 * @return
+	 */
 	List<SpecGroup> queryParamsByCid(Long cid);
 
 	/**
@@ -32,7 +37,7 @@ public interface ISpecificationService {
 	 * 删除规格组
 	 * @param id
 	 */
-	void deleteGruop(Long id);
+	void deleteGroup(Long id);
 
 	/**
 	 * 新增规格参数

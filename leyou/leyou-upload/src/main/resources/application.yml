@@ -6,6 +6,11 @@ spring:
   servlet:
     multipart:
       max-file-size: 5MB
+  rabbitmq:
+    host: 192.168.159.129 #主机
+    username: leyou #用户名
+    password: leyou #密码
+    virtual-host: /leyou #虚拟消息服务器
 eureka:
   client:
     service-url:

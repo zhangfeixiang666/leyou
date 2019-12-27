@@ -19,6 +19,7 @@ public class WXpayConfigration {
 	public PayConfig payConfig(){
 		return new PayConfig();
 	}
+	@Bean
 	public WXPay wxPay(){
 		return new WXPay(payConfig(), WXPayConstants.SignType.HMACSHA256);
 	}

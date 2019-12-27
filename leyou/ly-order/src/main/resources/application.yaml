@@ -7,7 +7,7 @@ spring:
   datasource:
     url: jdbc:mysql://127.0.0.1:3306/heima
     username: root
-    password: root
+    password: fx111355
     driver-class-name: com.mysql.jdbc.Driver
     druid:
       initial-size: 5
@@ -62,4 +62,4 @@ leyou:
     key: T6m9iK73b0kn9g5v426MKfHQH7X8rKwb
     httpConnectTimeoutMs: 5000
     httpReadTimeoutMs: 10000
-    notifyUrl: http://www.leyou.com/
+    notifyUrl: http://tvth58.natappfree.cc/notify/pay

@@ -14,6 +14,13 @@ import lombok.NoArgsConstructor;
 @Getter
 public enum ExceptionEnum {
 	PRiCE_CANNOT_BE_NULL(400, "价格不能为空"),
+	SELECT_ORDERSTATUS_FAIL(400, "订单状态为空"),
+	SELECT_ORDERDETAILS_FAIL(400, "订单详情为空"),
+	ORDER_PAYED(400, "订单已支付"),
+	PARAM_IS_NULL(400, "参数为空"),
+	MONEY_IS_NULL(400, "金额不对"),
+	INVALID_SIGN_ERROR(400, "无效的签名"),
+	SELECT_ORDER_FAIL(400, "订单为空"),
 	USER_VERIFY_FAILED(400, "验证失败"),
 	DELETE_GROUP_FAILED(400, "删除规格组失败"),
 	DELETE_PARAM_FAILED(400, "删除规格参数失败"),
@@ -25,6 +32,7 @@ public enum ExceptionEnum {
 	GROUP_UPDATE_FAILED(500,"更新规格组失败"),
 	PARAM_UPDATE_FAILED(500,"更新规格参数失败"),
 	SPU_NOT_FOUND(404,"商品集未找到"),
+	SPU_DELETE_FAILED(400,"商品删除失败"),
 	GOODS_NOT_FIND(404,"商品未找到"),
 	SKU_NOT_FOUND(404,"商品未找到"),
 	SPUDETAIL_NOT_FOUND(404,"商品详情未找到"),

@@ -5,6 +5,7 @@ import com.leyou.client.ICategoryClient;
 import com.leyou.client.IGoodsClient;
 import com.leyou.client.ISpecificationClient;
 import com.leyou.item.pojo.*;
+import com.leyou.utils.ThreadUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -116,6 +117,11 @@ public class GoodsServiceImpl {
 				writer.close();
 			}
 		}
+	}
+	//新建线程处理页面静态化
+	public void asynExecute(Long supId){
+		final long id = supId;
+		ThreadUtil.execute(()-> createHtml(id));
 	}
 
 	public void deleteHtml(Long id) {

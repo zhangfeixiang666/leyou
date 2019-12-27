@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -142,11 +143,22 @@ public class BrandServiceImpl implements IBrandService {
 	public void deleteBrandById(Long id) {
 		//1.删除中间表的数据
 		brandMapper.deleteCategroyAndBrand(id);
-		//2.删除品牌
+		//2.删除图片
+		//2.1查询品牌
+		Brand brand = brandMapper.selectByPrimaryKey(id);
+		//2.2异步删除图片
+		String image = brand.getImage();
+		if (StringUtils.isNotBlank(image)){
+			List<String> images = new ArrayList<>();
+			images.add(image);
+			new GoodsServiceImpl().sendFiles(images);
+		}
+		//3.删除品牌
 		int count = brandMapper.deleteByPrimaryKey(id);
 		if (count != 1){
 			log.error("商品删除失败，商品id为：{}",id);
 			throw new LyException(ExceptionEnum.DELETE_BRAND_FAILED);
 		}
+
 	}
 }

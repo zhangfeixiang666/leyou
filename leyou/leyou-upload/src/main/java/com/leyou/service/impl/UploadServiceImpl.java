@@ -53,7 +53,7 @@ public class UploadServiceImpl implements IUploadService {
 		//上传
 		StorePath storePath = null;
 		try {
-		 storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(), extension, null);
+			storePath = storageClient.uploadImageAndCrtThumbImage(file.getInputStream(), file.getSize(), extension, null);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

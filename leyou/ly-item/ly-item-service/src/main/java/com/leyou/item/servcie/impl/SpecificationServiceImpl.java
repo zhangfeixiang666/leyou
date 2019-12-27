@@ -59,7 +59,7 @@ public class SpecificationServiceImpl implements ISpecificationService {
 	}
 
 	/**
-	 * 查询规格组合规格组参数
+	 * 查询规格组参数和规格组内参数
 	 * @param cid
 	 * @return
 	 */
@@ -91,7 +91,7 @@ public class SpecificationServiceImpl implements ISpecificationService {
 	}
 
 	@Override
-	public void deleteGruop(Long id) {
+	public void deleteGroup(Long id) {
 
 		 //先删除分组下的规格参数
 		SpecParam param = new SpecParam();

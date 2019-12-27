@@ -11,6 +11,6 @@ import org.apache.ibatis.annotations.Update;
  * @Version 1.0
  */
 public interface IStockMapper extends IBaseMapper<Stock> {
-	@Update("update tb_stock set stock = stock - #{num} Where sku_id = # id AND stock >= #{num}")
+	@Update("update tb_stock set stock = stock - #{num} Where sku_id = #{id} AND stock >= #{num}")
 	int desStock(@Param("id") Long id, @Param("num") Integer num);
 }

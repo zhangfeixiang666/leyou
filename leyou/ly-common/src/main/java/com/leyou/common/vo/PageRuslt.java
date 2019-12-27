@@ -11,9 +11,9 @@ import java.util.List;
  */
 @Data
 public class PageRuslt<T> {
-	private Long totalPage;
-	private List<T> items;
-	private Long total;
+	private Long totalPage;//总页数
+	private List<T> items;//内容
+	private Long total;//总条数
 	public PageRuslt(){
 
 	}
